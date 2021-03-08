@@ -18,13 +18,15 @@ public class KafkaProducerConfig {
 
     public Map<String, Object> producerConfigs() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.16.2.30:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.16.3.80:9092");
         props.put(ProducerConfig.RETRIES_CONFIG, 0);
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, 4096);
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 40960);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        // 自定义分区策略
+        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, UserCustomPartitioner.class);
         return props;
     }
 
