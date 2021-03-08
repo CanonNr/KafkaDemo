@@ -4,6 +4,7 @@ import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.clients.producer.internals.StickyPartitionCache;
 import org.apache.kafka.common.Cluster;
 import org.apache.kafka.common.PartitionInfo;
+import org.apache.kafka.common.utils.Utils;
 
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,14 @@ public class UserCustomPartitioner implements Partitioner {
         if (keyBytes == null) {
             return this.stickyPartitionCache.partition(topic, cluster);
         }else{
+
             List<PartitionInfo> partitions = cluster.partitionsForTopic(topic);
             int numPartitions = partitions.size();
-            System.out.println(numPartitions-1);
-            return numPartitions-1;
+            int pid = Integer.parseInt((String) key);
+            if (pid > numPartitions-1){
+                return this.stickyPartitionCache.partition(topic, cluster);
+            }
+            return pid;
         }
     }
 
